@@ -6,6 +6,7 @@ import info.magnolia.templating.freemarker.*;
 
 import info.magnolia.objectfactory.*;
 
+import info.magnolia.module.categorization.functions.*;
 import info.magnolia.module.site.*;
 import info.magnolia.module.site.functions.*;
 
@@ -37,6 +38,8 @@ import freemarker.template.*;
 import info.magnolia.cms.filters.*;
 import info.magnolia.context.*;
 import info.magnolia.freemarker.*;
+import info.magnolia.imaging.functions.*;
+import info.magnolia.resteasy.client.functions.*;
 
 /**
  * @author daniel.kasmeroglu@kasisoft.net
@@ -164,10 +167,15 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     }
     
     // provide some context objects
-    model.put( "cms", Components.getComponent( Directives.class ) );
-    model.put( "cmsFn", Components.getComponent( TemplatingFunctions.class ) );
-    model.put( "siteFn", siteFunctions );
-    model.put( "damFn", Components.getComponent( DamTemplatingFunctions.class ) );
+    model.put( "cms"      , Components.getComponent( Directives                        . class ) );
+    model.put( "cmsfn"    , Components.getComponent( TemplatingFunctions               . class ) );
+    model.put( "imgfn"    , Components.getComponent( ImagingTemplatingFunctions        . class ) );
+    model.put( "restfn"   , Components.getComponent( RestTemplatingFunctions           . class ) );
+    model.put( "sitefn"   , siteFunctions );
+    model.put( "damfn"    , Components.getComponent( DamTemplatingFunctions            . class ) );
+    model.put( "searchfn" , Components.getComponent( SearchTemplatingFunctions         . class ) );
+    model.put( "catfn"    , Components.getComponent( CategorizationTemplatingFunctions . class ) );
+    
     String i18n = getI18n( fragment );
     if( i18n != null ) {
       model.put( "i18n", i18n );

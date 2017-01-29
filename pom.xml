@@ -170,6 +170,26 @@
 
     <dependency>
       <groupId>info.magnolia</groupId>
+      <artifactId>magnolia-module-imaging</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>info.magnolia.restclient</groupId>
+      <artifactId>magnolia-resteasy-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>info.magnolia.templating</groupId>
+      <artifactId>magnolia-templating-essentials-models</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>info.magnolia.categorization</groupId>
+      <artifactId>magnolia-categorization</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>info.magnolia</groupId>
       <artifactId>magnolia-templating</artifactId>
     </dependency>
 
