@@ -1,5 +1,7 @@
 package com.kasisoft.mgnl.fragments.servlets;
 
+import com.kasisoft.libs.common.constants.*;
+
 import com.kasisoft.libs.common.text.*;
 
 import org.apache.commons.lang3.builder.*;
@@ -41,14 +43,23 @@ public class FragmentDefinition {
   private String                                i18nBasename;
   private String                                name;
   private String                                template;
-  private String                                contentType;
+  private String                                contentType       = MimeType.Html.getMimeType();
   private Boolean                               getOrPost;
+  private Class<?>                              modelClass;
   
   public boolean isValid() {
     return (modelInitializer != null)
         && (nodeIdentifier   != null)
         && (name             != null)
         && (template         != null);
+  }
+  
+  public void setModelClass( Class<?> newModelClass ) {
+    modelClass = newModelClass;
+  }
+  
+  public Class<?> getModelClass() {
+    return modelClass;
   }
   
   public void setErrorCode( int newErrorCode ) {
@@ -60,10 +71,13 @@ public class FragmentDefinition {
   }
   
   public void setContentType( @Nullable String newContentType ) {
-    contentType = newContentType;
+    contentType = StringFunctions.cleanup( newContentType );
+    if( contentType == null ) {
+      contentType = MimeType.Html.getMimeType();
+    }
   }
   
-  @Nullable
+  @Nonnull
   public String getContentType() {
     return contentType;
   }
