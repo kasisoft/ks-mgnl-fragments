@@ -178,6 +178,10 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     model.put( "searchfn" , Components.getComponent( SearchTemplatingFunctions         . class ) );
     model.put( "catfn"    , Components.getComponent( CategorizationTemplatingFunctions . class ) );
     
+    if( MgnlContext.getAggregationState() != null ) {
+      model.put( "state", MgnlContext.getAggregationState() );
+    }
+    
     String i18n = getI18n( fragment );
     if( i18n != null ) {
       model.put( "i18n", i18n );
