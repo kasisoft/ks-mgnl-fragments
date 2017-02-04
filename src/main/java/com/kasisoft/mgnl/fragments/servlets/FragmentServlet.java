@@ -1,16 +1,9 @@
 package com.kasisoft.mgnl.fragments.servlets;
 
-import info.magnolia.templating.functions.*;
-
-import info.magnolia.templating.freemarker.*;
-
 import info.magnolia.objectfactory.*;
 
-import info.magnolia.module.categorization.functions.*;
 import info.magnolia.module.site.*;
 import info.magnolia.module.site.functions.*;
-
-import info.magnolia.dam.templating.functions.*;
 
 import info.magnolia.jcr.util.*;
 
@@ -38,8 +31,6 @@ import freemarker.template.*;
 import info.magnolia.cms.filters.*;
 import info.magnolia.context.*;
 import info.magnolia.freemarker.*;
-import info.magnolia.imaging.functions.*;
-import info.magnolia.resteasy.client.functions.*;
 
 /**
  * @author daniel.kasmeroglu@kasisoft.net
@@ -167,16 +158,6 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
         model.put( "content", new ContentMap( webcontext.getAggregationState().getCurrentContentNode() ) );
       }
     }
-    
-    // provide some context objects
-    model.put( "cms"      , Components.getComponent( Directives                        . class ) );
-    model.put( "cmsfn"    , Components.getComponent( TemplatingFunctions               . class ) );
-    model.put( "imgfn"    , Components.getComponent( ImagingTemplatingFunctions        . class ) );
-    model.put( "restfn"   , Components.getComponent( RestTemplatingFunctions           . class ) );
-    model.put( "sitefn"   , siteFunctions );
-    model.put( "damfn"    , Components.getComponent( DamTemplatingFunctions            . class ) );
-    model.put( "searchfn" , Components.getComponent( SearchTemplatingFunctions         . class ) );
-    model.put( "catfn"    , Components.getComponent( CategorizationTemplatingFunctions . class ) );
     
     if( MgnlContext.getAggregationState() != null ) {
       model.put( "state", MgnlContext.getAggregationState() );
