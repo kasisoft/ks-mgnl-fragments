@@ -119,10 +119,7 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
           
           render( fragment, fragmentpath.getValue2(), response );
           
-          if( fragment.getContentType() != null ) {
-            response.setContentType( fragment.getContentType() );
-          }
-          
+          response.setContentType( fragment.getContentType() );
           response.setStatus( HttpStatus.SC_OK );
           
         } catch( Exception ex ) {
@@ -149,7 +146,7 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     
     // apply default fragment related values
     model.put( "segment" , fragment.getName() );
-    model.put( "subPath" , subpath            );
+    model.put( "subpath" , subpath            );
     
     // initialized the current model
     fragment.getModelInitializer().accept( model );
@@ -164,6 +161,11 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
         state.setMainContentNode( NodeFunctions.getPageNode( content ) );
       }
       model.put( "content", new ContentMap( content ) );
+    } else {
+      WebContext webcontext = MgnlContext.getWebContextOrNull();
+      if( (webcontext != null) && (webcontext.getAggregationState() != null) && (webcontext.getAggregationState().getCurrentContentNode() != null) ) {
+        model.put( "content", new ContentMap( webcontext.getAggregationState().getCurrentContentNode() ) );
+      }
     }
     
     // provide some context objects
@@ -180,6 +182,14 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     if( i18n != null ) {
       model.put( "i18n", i18n );
     }
+    
+    if( fragment.getModelClass() != null ) {
+      Object obj = Components.getComponentProvider().newInstance( fragment.getModelClass(), model );
+      if( obj != null ) {
+        model.put( "model", obj );
+      }
+    }
+    
     
     fmHelper.render( fragment.getTemplate(), model, response.getWriter() );
     
