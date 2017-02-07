@@ -174,8 +174,7 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
         model.put( "model", obj );
       }
     }
-    
-    
+
     fmHelper.render( fragment.getTemplate(), model, response.getWriter() );
     
   }
