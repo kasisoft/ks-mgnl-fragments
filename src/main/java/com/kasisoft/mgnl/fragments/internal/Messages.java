@@ -7,15 +7,12 @@ import com.kasisoft.libs.common.i18n.*;
  */
 public class Messages {
   
-  @I18N("Installing filter servlet")
-  public static String                        task_install_filter_servlet;
-  
-  @I18N("Installing filter servlet '%s'")
-  public static I18NFormatter                 task_install_filter_servlet_desc;
-  
-  @I18N("Positioning filter servlet '%s' after '%s'")
-  public static I18NFormatter                 task_positioning_filter_servlet;
-  
+  @I18N("the following fragment definition is invalid: %s")
+  public static I18NFormatter                 error_invalid_fragment_definition;
+
+  @I18N("rendering the fragment '%s' failed. cause: %s")
+  public static I18NFormatter                 error_failed_to_render;
+
   static {
     I18NSupport.initialize( Messages.class );
   }

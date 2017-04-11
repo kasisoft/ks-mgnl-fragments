@@ -1,19 +1,20 @@
 package com.kasisoft.mgnl.fragments.servlets;
 
-import info.magnolia.objectfactory.*;
+import static com.kasisoft.mgnl.fragments.internal.Messages.*;
 
 import info.magnolia.module.site.*;
 import info.magnolia.module.site.functions.*;
 
+import info.magnolia.context.*;
+
 import info.magnolia.jcr.util.*;
 
-import com.kasisoft.libs.common.text.*;
+import com.kasisoft.libs.common.constants.*;
 
 import com.kasisoft.libs.common.model.*;
 import com.kasisoft.mgnl.util.*;
 
 import org.apache.http.*;
-import org.slf4j.*;
 
 import javax.servlet.http.*;
 
@@ -23,39 +24,66 @@ import javax.annotation.*;
 import javax.inject.*;
 import javax.jcr.*;
 
+import java.util.function.*;
+
 import java.util.*;
 
 import java.io.*;
 
+import lombok.extern.slf4j.*;
+
+import lombok.experimental.*;
+
+import lombok.*;
+
 import freemarker.template.*;
 import info.magnolia.cms.filters.*;
-import info.magnolia.context.*;
 import info.magnolia.freemarker.*;
+import info.magnolia.objectfactory.*;
 
 /**
  * @author daniel.kasmeroglu@kasisoft.net
  */
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
 
-  private static final Logger log = LoggerFactory.getLogger( FragmentServlet.class );
-
   @Inject
-  private transient FreemarkerHelper        fmHelper;
+  transient FreemarkerHelper        fmHelper;
   
   @Inject
-  private transient SiteFunctions           siteFunctions;
+  transient SiteFunctions           siteFunctions;
 
-  private Map<String, FragmentDefinition>   fragments;
+  Map<String, FragmentDefinition>   fragments;
 
-  private String                            i18nBasename;
+  @Getter @Setter
+  String                            i18nBasename;
   
-  private String                            servletBase;
+  String                            servletBase;
 
   public FragmentServlet( @Nonnull String basePath ) {
     servletBase = basePath;
     fragments   = new HashMap<>();
   }
 
+  @Override
+  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    process( request, response, true );
+  }
+
+  @Override
+  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    process( request, response, false );
+  }
+
+  /**
+   * Extracts the identifying segment for the {@link FragmentDefinition} and an optional subpath.
+   * 
+   * @param requestUri   The uri that is being processed.
+   * 
+   * @return   A segment plus it's optional subpath. Both non null. If the {@link Pair} itself is <code>null</code>
+   *           the supplied URI will not be handled by this servlet.
+   */
   private Pair<String, String> getFragmentPath( @Nonnull String requestUri ) {
     StringBuilder         uri    = new StringBuilder( requestUri );
     int                   idx    = uri.indexOf( servletBase );
@@ -71,50 +99,40 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
       if( idx != -1 ) {
         uri.delete( idx, uri.length() );
       }
+      // determine segment and subpath
       idx = uri.indexOf( "/" );
       if( idx != -1 ) {
+        // segment + subpath
         result = new Pair<>( uri.substring( 0, idx ), uri.substring( idx + 1 ) );
       } else {
+        // segment only
         result = new Pair<>( uri.toString(), "" );
       }
     }
     return result;
   }
   
-  @Override
-  protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-    process( request, response, true );
-  }
-
-  @Override
-  protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-    process( request, response, false );
-  }
-
   private void process( HttpServletRequest request, HttpServletResponse response, Boolean post ) {
     
     // identify the fragment that is supposed to be rendered
     Pair<String, String>  fragmentpath = getFragmentPath( request.getRequestURI() );
     FragmentDefinition    fragment     = fragments.get( fragmentpath.getValue1() );
-    if( (fragment != null) && fragment.isValid() ) {
+    if( isValidFragment( fragment ) ) {
       
       // verify that the method is allowed if specified by the fragment
-      boolean allowed = true;
-      if( fragment.getGetOrPost() != null ) {
-        allowed = fragment.getGetOrPost().booleanValue() == post;
-      }
-      
-      if( allowed ) {
+      if( isAllowed( fragment.getGetOrPost(), post ) ) {
         
         try {
           
+          // perform the actual rendering
           render( fragment, fragmentpath.getValue2(), response );
           
-          response.setContentType( fragment.getContentType() );
+          response.setContentType( getContentType( fragment ) );
           response.setStatus( HttpStatus.SC_OK );
           
         } catch( Exception ex ) {
-          log.error( ex.getLocalizedMessage(), ex );
+          // wow, something went wrong here
+          log.error( error_failed_to_render.format( fragmentpath.getValue1(), ex.getLocalizedMessage() ), ex );
           response.setStatus( fragment.getErrorCode() );
         }
         
@@ -124,11 +142,53 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
       }
       
     } else {
-      if( (fragment != null) && (! fragment.isValid()) ) {
-        log.warn( "Invalid fragment definition: {}", fragment );
-      }
       response.setStatus( HttpStatus.SC_NOT_FOUND );
     }
+    
+  }
+  
+  private boolean isValidFragment( FragmentDefinition fragment ) {
+    boolean result = fragment != null;
+    if( result ) {
+      result = fragment.isValid();
+      if( ! result ) {
+        log.warn( error_invalid_fragment_definition.format( fragment ) );
+      }
+    }
+    return result;
+  }
+  
+  private String getContentType( FragmentDefinition fragment ) {
+    String result = fragment.getContentType();
+    if( result == null ) {
+      result = MimeType.Html.getMimeType();
+    }
+    return result;
+  }
+  
+  private boolean isAllowed( Boolean required, boolean ispost ) {
+    boolean result = true;
+    if( required != null ) {
+      // the FragmentDefinition is only supposed to work on a GET or POST request
+      result = required.booleanValue() == ispost;
+    }
+    return result;
+  }
+  
+  private Consumer<Map<String, Object>> getModelInitializer( FragmentDefinition fragment ) {
+    Consumer<Map<String, Object>> result = fragment.getModelInitializer();
+    if( result == null ) {
+      result = $ -> {};
+    }
+    return result;
+  }
+  
+  private Function<Map<String, Object>, Node> getNodeIdentifier( FragmentDefinition fragment ) {
+    Function<Map<String, Object>, Node> result = fragment.getNodeIdentifier();
+    if( result == null ) {
+      result = $ -> null;
+    }
+    return result;
   }
 
   private void render( FragmentDefinition fragment, String subpath, HttpServletResponse response ) throws TemplateException, IOException {
@@ -139,11 +199,15 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     model.put( "segment" , fragment.getName() );
     model.put( "subpath" , subpath            );
     
-    // initialized the current model
-    fragment.getModelInitializer().accept( model );
+    // provide the definition itself, so it can be overridden with custom modifications to be processed
+    // by the model initializer
+    model.put( "def"     , fragment           ); 
+    
+    // initialize the current model
+    getModelInitializer( fragment ).accept( model );
     
     // setup site and nodes for the aggregation state if desired. 
-    Node content = fragment.getNodeIdentifier().apply( model );
+    Node content = getNodeIdentifier( fragment ).apply( model );
     if( content != null ) {
       if( MgnlContext.getAggregationState() instanceof ExtendedAggregationState ) {
         ExtendedAggregationState state = (ExtendedAggregationState) MgnlContext.getAggregationState();
@@ -153,6 +217,7 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
       }
       model.put( "content", new ContentMap( content ) );
     } else {
+      // there's no dedicated node so lets see if we can pass the current content node
       WebContext webcontext = MgnlContext.getWebContextOrNull();
       if( (webcontext != null) && (webcontext.getAggregationState() != null) && (webcontext.getAggregationState().getCurrentContentNode() != null) ) {
         model.put( "content", new ContentMap( webcontext.getAggregationState().getCurrentContentNode() ) );
@@ -196,14 +261,6 @@ public class FragmentServlet extends HttpServlet implements SelfMappingServlet {
     return fragments;
   }
   
-  public void setI18nBasename( String newI18nBasename ) {
-    i18nBasename = StringFunctions.cleanup( newI18nBasename );
-  }
-  
-  public String getI18nBasename() {
-    return i18nBasename;
-  }
-
   @Override
   public String getSelfMappingPath() {
     return servletBase;
