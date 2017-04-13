@@ -51,7 +51,7 @@
     <version-kcl>2.7</version-kcl>
     <version-lombok>1.16.16</version-lombok>
     <version-magnolia>5.4.9</version-magnolia>
-    <version-mgnl-util>0.2</version-mgnl-util>
+    <version-mgnl-util>0.3</version-mgnl-util>
     <version-testng>6.9.4</version-testng>
     
     <plugin-version-cobertura-maven>2.7</plugin-version-cobertura-maven>
