@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
   <groupId>com.kasisoft.mgnl</groupId>
   <artifactId>com.kasisoft.mgnl.fragments</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>MGNL :: Magnolia Fragments delivery</name>
   <url>https://kasisoft.com/bitbucket/projects/MGNL/repos/com.kasisoft.mgnl.fragments</url>
   <description>Generation of fragments allowing to be embedded into the web application (f.e. menus)</description>
