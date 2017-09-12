@@ -50,7 +50,7 @@
     <version-javax-inject>1</version-javax-inject>
     <version-kcl>2.7</version-kcl>
     <version-lombok>1.16.16</version-lombok>
-    <version-magnolia>5.5.3-SNAPSHOT</version-magnolia>
+    <version-magnolia>5.5.6-SNAPSHOT</version-magnolia>
     <version-mgnl-util>0.3</version-mgnl-util>
     <version-testng>6.9.4</version-testng>
     
