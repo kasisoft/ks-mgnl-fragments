@@ -1,44 +1,44 @@
-Purpose
-=======
+# Purpose
 
 This library provides a simple mechanism allowing to render HTML fragments without the use of a corresponding component node.
 It's mainly useful to render dynamically generated code.
 
 
-Contact
-=======
+# Infos
 
-* daniel.kasmeroglu@kasisoft.net
-
-
-Requirements
-============
-
- * Java 8
- * Magnolia 5.5.6
+* [eMail: daniel.kasmeroglu@kasisoft.net](mailto:daniel.kasmeroglu@kasisoft.net)
+* [Jira](https://kasisoft.com/jira/projects/MGNLFRAG)
+* [Jenkins](https://kasisoft.com/jenkins/job/mgnl.com.kasisoft.mgnl.fragments)
+* [GIT](https://kasisoft.com/bitbucket/projects/MGNL/repos/com.kasisoft.mgnl.fragments)
 
 
-Jira
-====
+# Development Setup
 
-* https://kasisoft.com/jira/projects/MGNLFRAG/issues
+I assume that you're familiar with Maven. If not I suggest to visit the following page:
+
+* https://maven.apache.org/
 
 
-Maven
-=====
+## Requirements
 
-Release
--------
+* Java 8
+* Magnolia 5.5.6
+
+
+## Maven
+
+### Releases
 
      <dependency>
          <groupId>com.kasisoft.mgnl</groupId>
          <artifactId>com.kasisoft.mgnl.fragments</artifactId>
          <version>0.1</version>
      </dependency>
-     
-     
-Snapshot
---------
+
+
+### Snapshots
+
+Snapshots can be used while accessing a dedicated maven repository. Your POM needs the following settings:
 
      <dependency>
          <groupId>com.kasisoft.mgnl</groupId>
@@ -59,9 +59,9 @@ Snapshot
          </repository>
      </repositories>
      
+     
 
-License
-=======
+# License
 
 MIT License
 
