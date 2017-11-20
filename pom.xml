@@ -76,7 +76,7 @@
       
       <dependency>
         <groupId>com.kasisoft.mgnl</groupId>
-        <artifactId>com.kasisoft.mgnl.dependencies</artifactId>
+        <artifactId>ks-mgnl-dependencies</artifactId>
         <version>${version-magnolia}</version>
         <type>pom</type>
         <scope>import</scope>
