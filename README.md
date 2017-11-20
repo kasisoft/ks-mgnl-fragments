@@ -8,8 +8,8 @@ It's mainly useful to render dynamically generated code.
 
 * [eMail: daniel.kasmeroglu@kasisoft.net](mailto:daniel.kasmeroglu@kasisoft.net)
 * [Jira](https://kasisoft.com/jira/projects/MGNLFRAG)
-* [Jenkins](https://kasisoft.com/jenkins/job/mgnl.com.kasisoft.mgnl.fragments)
-* [GIT](https://kasisoft.com/bitbucket/projects/MGNL/repos/com.kasisoft.mgnl.fragments)
+* [Jenkins](https://kasisoft.com/jenkins/job/mgnl.ks-mgnl-fragments)
+* [GIT](https://kasisoft.com/bitbucket/projects/MGNL/repos/ks-mgnl-fragments)
 
 
 # Development Setup
@@ -31,8 +31,8 @@ I assume that you're familiar with Maven. If not I suggest to visit the followin
 
      <dependency>
          <groupId>com.kasisoft.mgnl</groupId>
-         <artifactId>com.kasisoft.mgnl.fragments</artifactId>
-         <version>0.1</version>
+         <artifactId>ks-mgnl-fragments</artifactId>
+         <version>0.2</version>
      </dependency>
 
 
@@ -42,7 +42,7 @@ Snapshots can be used while accessing a dedicated maven repository. Your POM nee
 
      <dependency>
          <groupId>com.kasisoft.mgnl</groupId>
-         <artifactId>com.kasisoft.mgnl.fragments</artifactId>
+         <artifactId>ks-mgnl-fragments</artifactId>
          <version>0.2-SNAPSHOT</version>
      </dependency>
      
