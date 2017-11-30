@@ -13,7 +13,7 @@
   
   <groupId>com.kasisoft.mgnl</groupId>
   <artifactId>ks-mgnl-fragments</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.3</version>
 
   <name>MGNL :: Magnolia Fragments delivery</name>
   <url>https://kasisoft.com/bitbucket/projects/MGNL/repos/ks-mgnl-fragments</url>
