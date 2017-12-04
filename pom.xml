@@ -60,7 +60,7 @@
   
     <!-- versioning: dependencies -->
     <version-kcl>2.9</version-kcl>
-    <version-magnolia>5.6-0</version-magnolia>
+    <version-magnolia>5.6-1-SNAPSHOT</version-magnolia>
     <version-mgnl-util>0.5</version-mgnl-util>
     <version-tomcat>9.0.1</version-tomcat>
     
