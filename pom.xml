@@ -17,7 +17,7 @@
   <version>0.5-SNAPSHOT</version>
 
   <name>MGNL :: Magnolia Fragments delivery</name>
-  <url>https://kasisoft.com/bitbucket/projects/MGNL/repos/ks-mgnl-fragments</url>
+  <url>https://github.com/costamojan/ks-mgnl-fragments.git</url>
   <description>Generation of fragments allowing to be embedded into the web application (f.e. menus)</description>
   
   <licenses>
@@ -33,9 +33,9 @@
   </organization>
   
   <scm>
-    <url>https://kasisoft.com/bitbucket/projects/MGNL/repos/ks-mgnl-fragments</url>
-    <connection>scm:git:ssh://kasisoft.com:7999/mgnl/ks-mgnl-fragments.git</connection>
-    <developerConnection>scm:git:ssh://kasisoft.com:7999/mgnl/ks-mgnl-fragments.git</developerConnection>
+    <url>https://github.com/costamojan/ks-mgnl-fragments.git</url>
+    <connection>scm:git@github.com:costamojan/ks-mgnl-fragments.git</connection>
+    <developerConnection>scm:git@github.com:costamojan/ks-mgnl-fragments.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
   
