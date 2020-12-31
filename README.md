@@ -6,10 +6,9 @@ It's mainly useful to render dynamically generated code.
 
 # Infos
 
-* [eMail: daniel.kasmeroglu@kasisoft.net](mailto:daniel.kasmeroglu@kasisoft.net)
-* [Jira](https://kasisoft.com/jira/projects/MGNLFRAG)
-* [Jenkins](https://kasisoft.com/jenkins/job/mgnl.ks-mgnl-fragments)
-* [GIT](https://kasisoft.com/bitbucket/projects/MGNL/repos/ks-mgnl-fragments)
+* [eMail: daniel.kasmeroglu@kasisoft.com](mailto:daniel.kasmeroglu@kasisoft.com)
+* [Issues](https://github.com/kasisoft/ks-mgnl-fragments/issues)
+* [GIT](https://github.com/kasisoft/ks-mgnl-fragments)
 
 
 # Development Setup
@@ -35,31 +34,6 @@ I assume that you're familiar with Maven. If not I suggest to visit the followin
          <version>0.6</version>
      </dependency>
 
-
-### Snapshots
-
-Snapshots can be used while accessing a dedicated maven repository. Your POM needs the following settings:
-
-     <dependency>
-         <groupId>com.kasisoft.mgnl</groupId>
-         <artifactId>ks-mgnl-fragments</artifactId>
-         <version>0.7-SNAPSHOT</version>
-     </dependency>
-     
-     <repositories>
-         <repository>
-             <id>libs-kasisoft</id>
-             <url>https://kasisoft.com/artifactory/libs-kasisoft</url>
-             <releases>
-                 <enabled>true</enabled>
-             </releases>
-             <snapshots>
-                 <enabled>true</enabled>
-             </snapshots>
-         </repository>
-     </repositories>
-     
-     
 
 # License
 
